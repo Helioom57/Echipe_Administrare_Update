@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Echipe_Administrare", "Echipe_Administrare\Echipe_Administrare.csproj", "{102E75FF-A181-4E41-8A2D-EE2F7DE07D15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SortareCuvinte", "SortareCuvinte\SortareCuvinte.csproj", "{B9AFFB1B-E1C9-459F-A067-D2BF42A168F2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{102E75FF-A181-4E41-8A2D-EE2F7DE07D15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{102E75FF-A181-4E41-8A2D-EE2F7DE07D15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{102E75FF-A181-4E41-8A2D-EE2F7DE07D15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{102E75FF-A181-4E41-8A2D-EE2F7DE07D15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9AFFB1B-E1C9-459F-A067-D2BF42A168F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9AFFB1B-E1C9-459F-A067-D2BF42A168F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9AFFB1B-E1C9-459F-A067-D2BF42A168F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9AFFB1B-E1C9-459F-A067-D2BF42A168F2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D3D71CE-47BB-4BFB-885E-B2AEE218635B}
+	EndGlobalSection
+EndGlobal
