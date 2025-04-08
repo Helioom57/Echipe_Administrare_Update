@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Drawing;
 
-namespace Echipe_Administrare
+namespace Echipe_Administrare.Models
 
 {
     public class Echipa

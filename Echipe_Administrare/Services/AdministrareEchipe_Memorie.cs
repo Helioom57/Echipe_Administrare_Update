@@ -1,12 +1,13 @@
-﻿using Echipe_Administrare;
+﻿using Echipe_Administrare.Models;
 using System.Collections.Generic;
 using System;
 using System.IO;
 
 
-namespace Echipe_Administrare
+
+namespace Echipe_Administrare.Services
 {
-    class AdministrareEchipe_Memorie
+    public class AdministrareEchipe_Memorie
     {
         private List<Echipa> echipe;
         private const string FilePath = "teams.txt";
@@ -25,6 +26,7 @@ namespace Echipe_Administrare
             File.WriteAllLines(FilePath, lines);
         }
 
+        public List<Echipa> GetEchipe() => echipe;
         private void LoadTeams()
         {
             if (!File.Exists(FilePath)) return;
@@ -44,7 +46,7 @@ namespace Echipe_Administrare
                     var parts = line.Split('|');
                     currentTeam.AdaugaJucator(new Jucator(
                         parts[0],
-                        DateTime.Parse(parts[1]),
+                        DateTime.ParseExact(parts[1], "dd/MM/yyyy", null),
                         (PozitieJucator)Enum.Parse(typeof(PozitieJucator), parts[2]),
                         double.Parse(parts[3])
                     ));

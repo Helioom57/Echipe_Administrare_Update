@@ -1,6 +1,7 @@
 ﻿using System;
 
-namespace Echipe_Administrare
+
+namespace Echipe_Administrare.Models
 {
     public enum PozitieJucator
     {
