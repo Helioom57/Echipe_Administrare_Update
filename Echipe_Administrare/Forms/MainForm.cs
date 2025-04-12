@@ -9,6 +9,9 @@ namespace Echipe_Administrare.Forms
 {
     public partial class MainForm : Form
     {
+        private TextBox _txtSearch;
+        private Button _btnShowAll;
+        private bool _isInSearchMode = false;
         private AdministrareEchipe_Memorie _adminEchipe = new AdministrareEchipe_Memorie();
         private DataGridView _dataGridView;
 
@@ -81,6 +84,57 @@ namespace Echipe_Administrare.Forms
             panel.Controls.AddRange(new Control[] { btnAddTeam, btnAddPlayer, btnTotalSalary });
 
             this.Controls.AddRange(new Control[] { _dataGridView, panel });
+
+            
+            _txtSearch = new TextBox
+            {
+                Text = "Caută jucător...", 
+                ForeColor = Color.Gray,
+                Location = new Point(550, 20),
+                Width = 150
+            };
+
+            _txtSearch.GotFocus += (s, e) =>
+            {
+                if (_txtSearch.Text == "Caută jucător...")
+                {
+                    _txtSearch.Text = "";
+                    _txtSearch.ForeColor = Color.Black;
+                }
+            };
+
+            _txtSearch.LostFocus += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(_txtSearch.Text))
+                {
+                    _txtSearch.Text = "Caută jucător...";
+                    _txtSearch.ForeColor = Color.Gray;
+                }
+            };
+
+            
+            var btnSearch = new Button
+            {
+                Text = "Caută",
+                Location = new Point(710, 20),
+                Size = new Size(80, 23)
+            };
+
+            
+            _btnShowAll = new Button
+            {
+                Text = "Arată tot",
+                Location = new Point(800, 20),
+                Size = new Size(80, 23),
+                Visible = false
+            };
+
+           
+            panel.Controls.AddRange(new Control[] { _txtSearch, btnSearch, _btnShowAll });
+
+            
+            btnSearch.Click += (s, e) => ApplySearch(_txtSearch.Text);
+            _btnShowAll.Click += (s, e) => ResetSearch();
         }
 
         private void LoadData()
@@ -92,6 +146,30 @@ namespace Echipe_Administrare.Forms
                     team.Jucatori.Select(p => $"{p.Nume} ({p.Salariu} RON)"));
                 _dataGridView.Rows.Add(team.NumeEchipa, playersInfo);
             }
+        }
+        private void ApplySearch(string criteriu)
+        {
+            if (string.IsNullOrWhiteSpace(criteriu)) return;
+
+            var results = _adminEchipe.CautaJucatori(criteriu);
+            _dataGridView.Rows.Clear();
+
+            foreach (var (jucator, echipa) in results)
+            {
+                _dataGridView.Rows.Add(echipa, $"{jucator.Nume} | {jucator.Pozitie} | {jucator.Salariu} RON");
+            }
+
+            _isInSearchMode = true;
+            _btnShowAll.Visible = true;
+            _dataGridView.BackgroundColor = results.Count == 0 ? Color.FromArgb(255, 240, 240) : Color.White;
+        }
+
+        private void ResetSearch()
+        {
+            _txtSearch.Text = "";
+            _isInSearchMode = false;
+            _btnShowAll.Visible = false;
+            LoadData();
         }
 
         private void BtnAddTeam_Click(object sender, EventArgs e)
@@ -140,5 +218,6 @@ namespace Echipe_Administrare.Forms
             _adminEchipe.SaveData();
             base.OnFormClosing(e);
         }
+
     }
 }

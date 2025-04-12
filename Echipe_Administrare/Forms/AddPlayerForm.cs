@@ -4,7 +4,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
- // Adjust if Constants is in another namespace
+
 
 namespace Echipe_Administrare.Forms
 {
@@ -90,6 +90,7 @@ namespace Echipe_Administrare.Forms
                 if (_datePicker.Value < Constants.MinBirthDate || _datePicker.Value > Constants.MaxBirthDate)
                 {
                     _lblDateError.Text = $"Data între {Constants.MinBirthDate:dd.MM.yyyy} și {Constants.MaxBirthDate:dd.MM.yyyy}";
+
                     _lblDateError.Visible = true;
                     return;
                 }

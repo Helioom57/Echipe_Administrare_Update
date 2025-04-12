@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using System.IO;
+using System.Linq;
 
 
 
@@ -64,7 +65,18 @@ namespace Echipe_Administrare.Services
         public Echipa GasesteEchipa(string nume)
         {
             return echipe.Find(e => e.NumeEchipa == nume);
-        } 
+        }
+
+        public List<(Jucator jucator, string echipa)> CautaJucatori(string criteriu)
+        {
+            return echipe
+                .SelectMany(e => e.Jucatori
+                    .Where(j => j.Nume.IndexOf(criteriu, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .Select(j => (jucator: j, echipa: e.NumeEchipa))
+                )
+                .OrderBy(x => x.jucator.Nume)
+                .ToList();
+        }
     }
 }
 
