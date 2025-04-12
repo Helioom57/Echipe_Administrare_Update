@@ -25,7 +25,6 @@ namespace Echipe_Administrare.Services
             }
             File.WriteAllLines(FilePath, lines);
         }
-
         public List<Echipa> GetEchipe() => echipe;
         private void LoadTeams()
         {
@@ -53,35 +52,19 @@ namespace Echipe_Administrare.Services
                 }
             }
         }
-
         public AdministrareEchipe_Memorie()
         {
             echipe = new List<Echipa>();
             LoadTeams();
         }
-
         public void AdaugaEchipa(Echipa echipa)
         {
             echipe.Add(echipa);
         }
-
         public Echipa GasesteEchipa(string nume)
         {
             return echipe.Find(e => e.NumeEchipa == nume);
-        }
-
-        public void AfiseazaEchipe()
-        {
-            foreach (var echipa in echipe)
-            {
-                List<string> info = echipa.ObtineInformatiiEchipa();
-                foreach (var linie in info)
-                {
-                    Console.WriteLine(linie);
-                }
-            }
-        }
-        
+        } 
     }
 }
 

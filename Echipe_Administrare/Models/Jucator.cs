@@ -20,16 +20,15 @@ namespace Echipe_Administrare.Models
 
         public Jucator(string nume, DateTime dataNasterii, PozitieJucator pozitie, double salariu)
         {
+            if (string.IsNullOrWhiteSpace(nume))
+                throw new ArgumentException("Nume invalid.");
+            if (salariu <= 0)
+                throw new ArgumentException("Salariu trebuie să fie pozitiv.");
+
             Nume = nume;
             DataNasterii = dataNasterii;
             Pozitie = pozitie;
             Salariu = salariu;
         }
-
-        public override string ToString()
-        {
-            return $"Nume: {Nume}, Data nasterii: {DataNasterii:dd.MM.yyyy}, Pozitie: {Pozitie}, Salariu: {Salariu} RON";
-        }
-        
     }
 }

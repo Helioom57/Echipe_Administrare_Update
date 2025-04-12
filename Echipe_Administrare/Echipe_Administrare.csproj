@@ -206,6 +206,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\Constants.cs" />
     <Compile Include="Forms\AddPlayerForm.cs">
       <SubType>Form</SubType>
     </Compile>

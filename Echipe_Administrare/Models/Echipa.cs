@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Drawing;
 
 namespace Echipe_Administrare.Models
 
@@ -13,6 +12,8 @@ namespace Echipe_Administrare.Models
 
         public Echipa(string numeEchipa)
         {
+            if (string.IsNullOrWhiteSpace(numeEchipa))
+                throw new ArgumentException("Numele echipei nu poate fi gol.");
             NumeEchipa = numeEchipa;
             Jucatori = new List<Jucator>();
         }
@@ -22,25 +23,9 @@ namespace Echipe_Administrare.Models
             Jucatori.Add(jucator);
         }
 
-        public List<string> ObtineInformatiiEchipa()
-        {
-            List<string> info = new List<string> { $"Echipa {NumeEchipa}:" };
-            foreach (var jucator in Jucatori)
-            {
-                info.Add(jucator.ToString());
-            }
-            return info;
-        }
+        public double SalariulTotalEchipei() => Jucatori.Sum(j => j.Salariu);
 
-        public double SalariulTotalEchipei()
-        {
-            double salariuTotal = 0;
-            foreach (var jucator in Jucatori)
-            {
-                salariuTotal += jucator.Salariu;
-            }
-            return salariuTotal;
-        }
-        
+        public bool EliminaJucator(Jucator jucator) => Jucatori.Remove(jucator);
+
     }
 }

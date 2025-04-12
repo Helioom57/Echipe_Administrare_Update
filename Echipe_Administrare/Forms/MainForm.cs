@@ -137,7 +137,7 @@ namespace Echipe_Administrare.Forms
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            _adminEchipe.SaveData(); // Save to file on close
+            _adminEchipe.SaveData();
             base.OnFormClosing(e);
         }
     }

@@ -20,7 +20,16 @@ namespace Echipe_Administrare.Forms
             this.Controls.Add(txtName);
             this.Controls.Add(btnAdd);
 
-            btnAdd.Click += (s, e) => TeamName = txtName.Text;
+            btnAdd.Click += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(txtName.Text))
+                {
+                    MessageBox.Show("Numele echipei nu poate fi gol!", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                TeamName = txtName.Text;
+                this.DialogResult = DialogResult.OK;
+            };
         }
     }
 }
