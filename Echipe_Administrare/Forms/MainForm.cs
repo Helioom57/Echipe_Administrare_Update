@@ -15,12 +15,15 @@ namespace Echipe_Administrare.Forms
         private AdministrareEchipe_Memorie _adminEchipe = new AdministrareEchipe_Memorie();
         private DataGridView _dataGridView;
         private RadioButton _rbtnU23;
+        private Button btnUpdatePlayer;
+
 
         public MainForm()
         {
             InitializeComponent();
             SetupUI();
             LoadData();
+
 
         }
         private void InitializeComponent()
@@ -30,7 +33,7 @@ namespace Echipe_Administrare.Forms
         private void SetupUI()
         {
             this.Text = "Administrare Echipe de Fotbal";
-            this.Size = new Size(900, 600);
+            this.Size = new Size(1250, 600);
             this.BackColor = Color.LightSkyBlue;
 
             _dataGridView = new DataGridView
@@ -50,8 +53,10 @@ namespace Echipe_Administrare.Forms
             var btnAddTeam = new Button
             {
                 Text = "Adaugă Echipă",
-                BackColor = Color.Navy,
+                BackColor = Color.FromArgb(43, 87, 154),
                 ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { MouseOverBackColor = Color.FromArgb(58, 107, 181) },
                 Size = new Size(150, 40),
                 Location = new Point(20, 20)
             };
@@ -60,8 +65,10 @@ namespace Echipe_Administrare.Forms
             var btnAddPlayer = new Button
             {
                 Text = "Adaugă Jucător",
-                BackColor = Color.Navy,
+                BackColor = Color.FromArgb(242, 80, 34),
                 ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { MouseOverBackColor = Color.FromArgb(255, 107, 61) },
                 Size = new Size(150, 40),
                 Location = new Point(190, 20)
             };
@@ -70,18 +77,20 @@ namespace Echipe_Administrare.Forms
             var btnTotalSalary = new Button
             {
                 Text = "Salariu Total",
-                BackColor = Color.Green,
+                BackColor = Color.FromArgb(127, 186, 0),
                 ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { MouseOverBackColor = Color.FromArgb(140, 194, 24) },
                 Size = new Size(150, 40),
                 Location = new Point(360, 20)
             };
             btnTotalSalary.Click += BtnTotalSalary_Click;
 
-            //RadioBtn verificare U23
+
             _rbtnU23 = new RadioButton
             {
                 Text = "Arată jucători U23",
-                Location = new Point(550, 60),
+                Location = new Point(900, 50),
                 Size = new Size(120, 20),
                 Checked = false
             };
@@ -103,7 +112,7 @@ namespace Echipe_Administrare.Forms
             {
                 Text = "Caută jucător...",
                 ForeColor = Color.Gray,
-                Location = new Point(550, 20),
+                Location = new Point(900, 20),
                 Width = 150
             };
 
@@ -129,7 +138,7 @@ namespace Echipe_Administrare.Forms
             var btnSearch = new Button
             {
                 Text = "Caută",
-                Location = new Point(710, 20),
+                Location = new Point(1060, 20),
                 Size = new Size(80, 23)
             };
 
@@ -137,7 +146,11 @@ namespace Echipe_Administrare.Forms
             _btnShowAll = new Button
             {
                 Text = "Arată tot",
-                Location = new Point(800, 20),
+                BackColor = Color.FromArgb(115, 115, 115),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { MouseOverBackColor = Color.FromArgb(142, 142, 142) },
+                Location = new Point(1150, 20),
                 Size = new Size(80, 23),
                 Visible = false
             };
@@ -149,6 +162,23 @@ namespace Echipe_Administrare.Forms
             btnSearch.Click += (s, e) => ApplySearch(_txtSearch.Text);
             _btnShowAll.Click += (s, e) => ResetSearch();
 
+
+
+            var btnUpdatePlayer = new Button
+            {
+                Text = "Actualizare Jucător",
+                BackColor = Color.FromArgb(0, 179, 165),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Size = new Size(150, 40),
+                Location = new Point(530, 20)
+            };
+            btnUpdatePlayer.Click += BtnUpdatePlayer_Click;
+            panel.Controls.Add(btnUpdatePlayer);
+
+
+            _dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            _dataGridView.MultiSelect = false;
         }
 
         private void LoadData()
@@ -246,6 +276,67 @@ namespace Echipe_Administrare.Forms
             else
             {
                 LoadData();
+            }
+        }
+
+
+        private void BtnUpdatePlayer_Click(object sender, EventArgs e)
+        {
+
+            if (_dataGridView.SelectedCells.Count == 0 && _dataGridView.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Selectați un jucător din tabel!", "Eroare",
+                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DataGridViewRow selectedRow;
+
+
+            if (_dataGridView.SelectedRows.Count > 0)
+            {
+                selectedRow = _dataGridView.SelectedRows[0];
+            }
+            else
+            {
+                selectedRow = _dataGridView.Rows[_dataGridView.SelectedCells[0].RowIndex];
+            }
+
+            string teamName = selectedRow.Cells["Echipa"].Value?.ToString();
+            string playerInfo = selectedRow.Cells["Jucatori"].Value?.ToString();
+
+            if (string.IsNullOrEmpty(teamName) || string.IsNullOrEmpty(playerInfo))
+            {
+                MessageBox.Show("Datele jucătorului nu sunt valide!", "Eroare",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+
+            string playerName = playerInfo.Split('|')[0].Trim();
+
+            var team = _adminEchipe.GasesteEchipa(teamName);
+            if (team == null)
+            {
+                MessageBox.Show("Echipa nu a fost găsită!", "Eroare",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var player = team.Jucatori.FirstOrDefault(j => j.Nume.Equals(playerName, StringComparison.OrdinalIgnoreCase));
+            if (player == null)
+            {
+                MessageBox.Show($"Jucătorul {playerName} nu a fost găsit în echipa {teamName}!", "Eroare",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (var form = new UpdatePlayerForm(_adminEchipe, team, player))
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    LoadData();
+                }
             }
         }
 

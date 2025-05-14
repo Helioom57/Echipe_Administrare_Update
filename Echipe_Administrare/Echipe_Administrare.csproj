@@ -221,6 +221,12 @@
     <Compile Include="Forms\AddTeamForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\UpdatePlayerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UpdatePlayerForm.Designer.cs">
+      <DependentUpon>UpdatePlayerForm.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

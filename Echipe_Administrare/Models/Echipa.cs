@@ -23,9 +23,19 @@ namespace Echipe_Administrare.Models
             Jucatori.Add(jucator);
         }
 
+        public bool EliminaJucator(Jucator jucator)
+        {
+            var jucatorToRemove = Jucatori.FirstOrDefault(j => j.Nume == jucator.Nume);
+            if (jucatorToRemove != null)
+            {
+                return Jucatori.Remove(jucatorToRemove);
+            }
+            return false;
+        }
+
         public double SalariulTotalEchipei() => Jucatori.Sum(j => j.Salariu);
 
-        public bool EliminaJucator(Jucator jucator) => Jucatori.Remove(jucator);
+
 
     }
 }
