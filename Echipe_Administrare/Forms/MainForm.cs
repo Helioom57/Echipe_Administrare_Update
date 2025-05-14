@@ -1,5 +1,5 @@
-﻿using Echipe_Administrare.Models;     
-using Echipe_Administrare.Services;   
+﻿using Echipe_Administrare.Models;
+using Echipe_Administrare.Services;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -14,12 +14,14 @@ namespace Echipe_Administrare.Forms
         private bool _isInSearchMode = false;
         private AdministrareEchipe_Memorie _adminEchipe = new AdministrareEchipe_Memorie();
         private DataGridView _dataGridView;
+        private RadioButton _rbtnU23;
 
         public MainForm()
         {
             InitializeComponent();
             SetupUI();
             LoadData();
+
         }
         private void InitializeComponent()
         {
@@ -75,20 +77,31 @@ namespace Echipe_Administrare.Forms
             };
             btnTotalSalary.Click += BtnTotalSalary_Click;
 
+            //RadioBtn verificare U23
+            _rbtnU23 = new RadioButton
+            {
+                Text = "Arată jucători U23",
+                Location = new Point(550, 60),
+                Size = new Size(120, 20),
+                Checked = false
+            };
+
+            _rbtnU23.CheckedChanged += (s, e) => FilterByU23();
+
             var panel = new Panel
             {
                 Dock = DockStyle.Top,
                 Height = 80,
                 BackColor = Color.LightSteelBlue
             };
-            panel.Controls.AddRange(new Control[] { btnAddTeam, btnAddPlayer, btnTotalSalary });
+            panel.Controls.AddRange(new Control[] { btnAddTeam, btnAddPlayer, btnTotalSalary, _rbtnU23 });
 
             this.Controls.AddRange(new Control[] { _dataGridView, panel });
 
-            
+
             _txtSearch = new TextBox
             {
-                Text = "Caută jucător...", 
+                Text = "Caută jucător...",
                 ForeColor = Color.Gray,
                 Location = new Point(550, 20),
                 Width = 150
@@ -112,7 +125,7 @@ namespace Echipe_Administrare.Forms
                 }
             };
 
-            
+
             var btnSearch = new Button
             {
                 Text = "Caută",
@@ -120,7 +133,7 @@ namespace Echipe_Administrare.Forms
                 Size = new Size(80, 23)
             };
 
-            
+
             _btnShowAll = new Button
             {
                 Text = "Arată tot",
@@ -129,12 +142,13 @@ namespace Echipe_Administrare.Forms
                 Visible = false
             };
 
-           
+
             panel.Controls.AddRange(new Control[] { _txtSearch, btnSearch, _btnShowAll });
 
-            
+
             btnSearch.Click += (s, e) => ApplySearch(_txtSearch.Text);
             _btnShowAll.Click += (s, e) => ResetSearch();
+
         }
 
         private void LoadData()
@@ -212,6 +226,29 @@ namespace Echipe_Administrare.Forms
                 MessageBox.Show("Selectează o echipă din tabel!", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+        private void FilterByU23()
+        {
+            if (_rbtnU23.Checked)
+            {
+                var playersU23 = _adminEchipe.GetEchipe()
+                    .SelectMany(team => team.Jucatori)
+                    .Where(player => (DateTime.Now.Year - player.DataNasterii.Year) < 23)
+                    .ToList();
+
+                _dataGridView.Rows.Clear();
+                foreach (var player in playersU23)
+                {
+                    string teamName = _adminEchipe.GetEchipe().First(t => t.Jucatori.Contains(player)).NumeEchipa;
+                    _dataGridView.Rows.Add(teamName, $"{player.Nume} ({player.Salariu} RON)");
+                }
+            }
+            else
+            {
+                LoadData();
+            }
+        }
+
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
